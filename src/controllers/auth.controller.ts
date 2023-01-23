@@ -1,11 +1,15 @@
 import { Request,Response } from "express";
-import { loginUserService } from "../services/auth.service";
+import { loginUserService, RegisterUserService } from "../services/auth.service";
 
 
-const registerController = async (req:Request,res:Response) =>{};
+const registerController = async (req:Request,res:Response) =>{
+    const registerService = await RegisterUserService(req.body);
+
+    res.send(registerService);
+};
 
 const loginController = async (req:Request,res:Response) =>{
-    const loginService = await loginUserService();
+    const loginService = await loginUserService(req.body);
 
     res.send(loginService);
 };

@@ -2,17 +2,14 @@ import {sign, verify} from "jsonwebtoken";
 
 const jwtSecret = process.env.SECRET || 'tojebadwd';
 
-const generateToken =async (id:string) => {
+const generateToken =async (id:number) => {
 
     const jwt =  sign({id},jwtSecret)
     return jwt;
     
 }
 
-const verifyToken = async () => {
-    
-}
 
-export{generateToken,verifyToken};
+export{generateToken};
 
 

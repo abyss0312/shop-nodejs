@@ -21,7 +21,7 @@ export class User extends BaseEntity{
     @Column()
     lastname:string;
 
-    @Column()
+    @Column({default:true})
     isActive: boolean;
 
     @CreateDateColumn()
@@ -30,13 +30,13 @@ export class User extends BaseEntity{
     @Column()
     email:string;
 
-    @Column()
+    @Column({default:''})
     phonenumber:string;
 
     @Column()
     userType: number;
 
-    @Column()
+    @Column({default:''})
     token:string;
 
 

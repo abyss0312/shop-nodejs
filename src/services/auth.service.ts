@@ -1,26 +1,74 @@
 import { generateToken } from "../utils/jwt.handle";
-import { encrypt } from "../utils/bycrypt.handle";
-import { TokenClass } from "typescript";
+import { encrypt, verify } from "../utils";
 import { User } from "../models";
+import { LoginDto, SignupUserDto } from "../interfaces";
 
 
 
-const  loginUserService = async () => {
 
-    const passCrypt = await encrypt("jelloo");
-    console.log(passCrypt);
+const  loginUserService = async (user:LoginDto) => {
 
-    const token = await generateToken("3");
-    console.log('bearer' + token);
-   // return `bearer ${token}`;
+   
+    try{
+        //const passCrypt = await encrypt(user.password);
+        let userExist = await  User.findOneBy({username: user.username});
+       console.log(userExist)
+       if(userExist == null){
 
-    //const user = await User.findOneBy({ Id: 1 });
-    const user = await User.find();
-    console.log(user);
-    return user;
+        return 'Usuario no existe';
+       }
+       let passCorrect = await verify(user.password,userExist.password);
+       console.log(passCorrect)
+
+       if(passCorrect == false){
+            return 'password incorrect';
+       }
+
+       const token = await generateToken(userExist.Id);
+
+       userExist.token = `Bearer ${token}`;
+
+        await User.save(userExist);
+
+        return {id:userExist.Id, token:token}
+    
+
+    }catch(ex){
+        console.log(ex);
+    }
+
+
+
 }
 
-const  RegisterUserService = async () => {}
+const  RegisterUserService = async (user: SignupUserDto) => {
+
+      const passCrypt = await encrypt(user.password);
+
+      const userResgister = new User();
+
+      userResgister.username= user.username;
+      userResgister.password = passCrypt;
+      userResgister.firstname = user.firstname;
+      userResgister.lastname = user.lastname;
+      userResgister.email = user.email;
+      userResgister.createdDate = new Date();
+      userResgister.userType = 1;
+
+     try{ 
+       // await userResgister;
+        await User.save(userResgister);
+        return {data:'creado'}
+     }
+
+     catch(ex){
+        console.log(ex)
+     }
+
+
+
+    
+}
 
 
 export {loginUserService,RegisterUserService};
