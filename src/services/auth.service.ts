@@ -70,8 +70,27 @@ const  RegisterUserService = async (user: SignupUserDto) => {
     
 }
 
+const verifyToken = async (user:number ) =>{
 
-export {loginUserService,RegisterUserService};
+    try{
+   /*  
+        const {token,Id,username} = await User.findOneBy({Id:user});
+        if(token == null || token == ""){
+            return "invalido";
+        }
+
+        return {Id,username}; */
+
+        return {Id:1, username:"john"};
+    }
+    catch(ex){
+
+    }
+
+}
+
+
+export {loginUserService,RegisterUserService,verifyToken};
 
 
 

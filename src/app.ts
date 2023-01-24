@@ -14,7 +14,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new webSocket(server, {
     cors:{
-        origin:"http://localhost:3000",
+        origin:"http://localhost:8100",
         methods:["GET","POST"]
     }
 });
