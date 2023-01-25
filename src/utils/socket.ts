@@ -18,6 +18,7 @@ export default function  socketNode(io){
         socket.broadcast.emit("user connected", {
           userID: socket.id,
           username: socket.username,
+          self:false,
         });
 
         socket.on("private_message", ({ content, to }) => {
