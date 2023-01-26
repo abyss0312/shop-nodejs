@@ -1,3 +1,4 @@
+import { idText } from "typescript";
 import { verifyToken } from "../services/auth.service";
 
 export default function  socketNode(io){
@@ -15,7 +16,7 @@ export default function  socketNode(io){
         console.log(users);
         socket.emit("users", users);
 
-        socket.broadcast.emit("user connected", {
+        socket.broadcast.emit("user connected", { 
           userID: socket.id,
           username: socket.username,
           self:false,
@@ -25,6 +26,14 @@ export default function  socketNode(io){
             socket.to(to).emit("private_message", {
               content,
               from: socket.id,
+            });
+          });
+
+          socket.on("disconnect", () => {
+            console.log('fad')
+            console.log(socket.id)
+            socket.broadcast.emit("disconnect_user",{
+              id:socket.id
             });
           });
        
