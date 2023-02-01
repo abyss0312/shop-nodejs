@@ -73,18 +73,17 @@ const  RegisterUserService = async (user: SignupUserDto) => {
 const verifyToken = async (user:number ) =>{
 
     try{
-   /*  
-        const {token,Id,username} = await User.findOneBy({Id:user});
+   
+        const {token,Id,username,sessionID} = await User.findOneBy({Id:user});
         if(token == null || token == ""){
             return "invalido";
         }
 
-        return {Id,username}; */
+        return {Id,username,sessionID}; 
 
-        return {Id:1, username:"john"};
     }
     catch(ex){
-
+        console.log('error al verificar token');
     }
 
 }

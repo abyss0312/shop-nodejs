@@ -6,7 +6,7 @@ import {router} from "./routes";
 import {  initDB } from "./config/mysql";
 import http from 'http';
 import {Server as webSocket} from 'socket.io';
-import socketNode from "./utils/socket";
+import { SocketService } from "./services/socket.service";
 
 
 
@@ -23,9 +23,9 @@ app.use(cors());
 app.use(express.json());
 app.use('/', router);
 
-//initDB();
+initDB();
 
-socketNode(io);
+SocketService(io);
 
 
 server.listen(port, () => console.log('listo' + port));
