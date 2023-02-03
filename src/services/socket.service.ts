@@ -23,22 +23,25 @@ export function SocketService (io:any) {
         socket.broadcast.emit("user connected", { 
           userID: socket.id,
           username: socket.username,
+          sessionID: socket.sessionID,
           self:false,
         });
 
         socket.on("private_message", ({ content, to }) => {
-            socket.to(to).emit("private_message", {
+            socket.to(to).to(socket.userID).emit("private_message", {
               content,
               from: socket.id,
             });
           });
 
-          socket.on("disconnect", () => {
-            console.log('fad')
-            console.log(socket.id)
-            socket.broadcast.emit("disconnect_user",{
-              id:socket.id
-            });
+          socket.on("disconnect", async() => {
+            const matchingSockets = await io.in(socket.userID).allSockets();
+             const isDisconnected = matchingSockets.size === 0;
+            if(isDisconnected){
+              socket.broadcast.emit("disconnect_user",{
+                id:socket.id
+              });
+            }
           });
        
        
@@ -54,7 +57,7 @@ export function SocketService (io:any) {
             socket.sessionID = guid();
         }
         else{
-            socket.userID = user.sessionID;
+            socket.sessionID = user.sessionID;
         }
         socket.username = username;
         socket.userID = user.Id;
